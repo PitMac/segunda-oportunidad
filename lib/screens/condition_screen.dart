@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:segunda_oportu/screens/register_screen.dart';
 import 'package:segunda_oportu/screens/welcome_screen.dart';
 import 'package:segunda_oportu/widgets/style_widgets.dart';
 
@@ -49,7 +50,13 @@ Queremos darte alguna reglas importantes:
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterScreen(),
+                          ));
+                    },
                     style: buttonStyle,
                     child: const Text(
                       'Estoy de acuerdo',

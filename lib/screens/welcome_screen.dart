@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:segunda_oportu/screens/condition_screen.dart';
 import 'package:segunda_oportu/screens/login_screen.dart';
-import 'package:segunda_oportu/screens/register_screen.dart';
 import 'package:segunda_oportu/widgets/style_widgets.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -60,7 +60,7 @@ class WelcomeScreen extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const RegisterScreen(),
+                                builder: (context) => const ConditionScreen(),
                               ));
                         },
                         style: buttonStyle,

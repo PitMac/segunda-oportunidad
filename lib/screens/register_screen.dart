@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:segunda_oportu/widgets/style_widgets.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
-
-  @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
-}
-
-class _RegisterScreenState extends State<RegisterScreen> {
-  bool obscurePassword = true;
-  bool otherPassword = true;
+class RegisterScreen extends HookWidget {
+  const RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final obscurePassword = useState(true);
+    final otherPassword = useState(true);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Registro'),
@@ -31,20 +26,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   'Nombre',
                   style: TextStyle(fontSize: 16),
                 ),
-                const TextField(),
+                TextField(
+                  decoration: inputDecoration(null),
+                ),
                 const SizedBox(height: 20),
                 const Text(
                   'Apellido',
                   style: TextStyle(fontSize: 16),
                 ),
-                const TextField(),
+                TextField(
+                  decoration: inputDecoration(null),
+                ),
                 const SizedBox(height: 20),
                 const Text(
                   'Correo Electronico',
                   style: TextStyle(fontSize: 16),
                 ),
-                const TextField(
+                TextField(
                   keyboardType: TextInputType.emailAddress,
+                  decoration: inputDecoration(null),
                 ),
                 const SizedBox(height: 20),
                 const Text(
@@ -53,21 +53,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 TextField(
                   decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: greenColor),
+                    ),
                     suffixIcon: IconButton(
                       onPressed: () {
-                        setState(() {
-                          obscurePassword = !obscurePassword;
-                        });
+                        obscurePassword.value = !obscurePassword.value;
                       },
                       icon: Icon(
-                        obscurePassword
+                        obscurePassword.value
                             ? Icons.remove_red_eye_outlined
                             : Icons.remove_red_eye,
                         color: Colors.grey,
                       ),
                     ),
                   ),
-                  obscureText: obscurePassword,
+                  obscureText: obscurePassword.value,
                 ),
                 const SizedBox(height: 20),
                 const Text(
@@ -76,21 +77,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 TextField(
                   decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: greenColor),
+                    ),
                     suffixIcon: IconButton(
                       onPressed: () {
-                        setState(() {
-                          otherPassword = !otherPassword;
-                        });
+                        otherPassword.value = !otherPassword.value;
                       },
                       icon: Icon(
-                        otherPassword
+                        otherPassword.value
                             ? Icons.remove_red_eye_outlined
                             : Icons.remove_red_eye,
                         color: Colors.grey,
                       ),
                     ),
                   ),
-                  obscureText: otherPassword,
+                  obscureText: otherPassword.value,
                 ),
                 const SizedBox(
                   height: 10,

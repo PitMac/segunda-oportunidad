@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:segunda_oportu/screens/condition_screen.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:segunda_oportu/screens/home_screen.dart';
 import 'package:segunda_oportu/widgets/style_widgets.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  bool obscurePassword = true;
+class LoginScreen extends HookWidget {
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final obscurePassword = useState(true);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Inicio Sesión'),
@@ -30,8 +25,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 'Correo Electronico',
                 style: TextStyle(fontSize: 16),
               ),
-              const TextField(
+              TextField(
                 keyboardType: TextInputType.emailAddress,
+                decoration: inputDecoration(null),
               ),
               const SizedBox(height: 20),
               const Text(
@@ -40,21 +36,22 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               TextField(
                 decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: greenColor),
+                  ),
                   suffixIcon: IconButton(
                     onPressed: () {
-                      setState(() {
-                        obscurePassword = !obscurePassword;
-                      });
+                      obscurePassword.value = !obscurePassword.value;
                     },
                     icon: Icon(
-                      obscurePassword
+                      obscurePassword.value
                           ? Icons.remove_red_eye_outlined
                           : Icons.remove_red_eye,
                       color: Colors.grey,
                     ),
                   ),
                 ),
-                obscureText: obscurePassword,
+                obscureText: obscurePassword.value,
               ),
               const SizedBox(
                 height: 10,
@@ -73,11 +70,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   ElevatedButton(
                     style: buttonStyle,
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ConditionScreen(),
-                          ));
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomeScreen(),
+                        ),
+                        (Route<dynamic> route) => false,
+                      );
                     },
                     child: const Text(
                       'Inicio de sesion',
