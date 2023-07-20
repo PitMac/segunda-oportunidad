@@ -18,7 +18,7 @@ class HomeScreen extends HookWidget {
       const MessagesScreen(),
     ];
     return Scaffold(
-      endDrawer: drawerWidget(),
+      endDrawer: const DrawerWidget(),
       appBar: index.value == 0
           ? AppBar(
               title: const Text('Inicio'),

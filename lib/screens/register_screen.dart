@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:segunda_oportu/screens/success_register_screen.dart';
 import 'package:segunda_oportu/widgets/style_widgets.dart';
 
 class RegisterScreen extends HookWidget {
@@ -105,7 +106,15 @@ class RegisterScreen extends HookWidget {
                   children: [
                     ElevatedButton(
                       style: buttonStyle,
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SuccessRegisterScreen(),
+                          ),
+                          (Route<dynamic> route) => false,
+                        );
+                      },
                       child: const Text(
                         'Registrar',
                         style: TextStyle(color: Colors.white),

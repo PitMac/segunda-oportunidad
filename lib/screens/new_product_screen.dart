@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:provider/provider.dart';
 import 'package:segunda_oportu/provider/product_provider.dart';
+import 'package:segunda_oportu/screens/success_product_screen.dart';
 import 'package:segunda_oportu/widgets/style_widgets.dart';
 
 enum TypeProduct { producto, comestible }
@@ -91,8 +92,15 @@ class NewProductScreen extends HookWidget {
                   ElevatedButton(
                     style: buttonStyle,
                     onPressed: () {
-                      productProvider.sendProduct(nombreController.text,
-                          descripcionController.text, product.value);
+                      // productProvider.sendProduct(nombreController.text,
+                      //     descripcionController.text, product.value);
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SuccessProductScreen(),
+                        ),
+                        (Route<dynamic> route) => false,
+                      );
                     },
                     child: const Text(
                       'Subir articulo',
