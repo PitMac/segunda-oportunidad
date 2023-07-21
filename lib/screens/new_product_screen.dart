@@ -1,24 +1,33 @@
+import 'dart:io';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:segunda_oportu/provider/product_provider.dart';
-import 'package:segunda_oportu/screens/success_product_screen.dart';
+import 'package:segunda_oportu/widgets/consts.dart';
 import 'package:segunda_oportu/widgets/style_widgets.dart';
-
-enum TypeProduct { producto, comestible }
 
 class NewProductScreen extends HookWidget {
   const NewProductScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final product = useState(TypeProduct.producto);
-
     final nombreController = useTextEditingController();
     final descripcionController = useTextEditingController();
+    final selectedImage = useState<File?>(null);
+    final selectedCategory = useState<String>("Frutas");
 
     final productProvider = Provider.of<ProductProvider>(context);
+
+    Future pickImageFromGallery() async {
+      final returnedImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (returnedImage != null) {
+        selectedImage.value = File(returnedImage.path);
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -32,21 +41,36 @@ class NewProductScreen extends HookWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              DottedBorder(
-                color: Colors.black, //color of dotted/dash line
-                strokeWidth: 2, //thickness of dash/dots
-                dashPattern: const [10, 6],
-                child: const SizedBox(
-                  width: double.infinity,
-                  height: 200,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.camera_alt_outlined, size: 100),
-                      Text('Subir Imagen')
-                    ],
-                  ),
-                ),
+              GestureDetector(
+                onTap: () {
+                  pickImageFromGallery();
+                },
+                child: selectedImage.value != null
+                    ? SizedBox(
+                        height: 300,
+                        width: double.infinity,
+                        child: Image.file(
+                          selectedImage.value!,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : DottedBorder(
+                        radius: const Radius.circular(50),
+                        color: Colors.black, //color of dotted/dash line
+                        strokeWidth: 2, //thickness of dash/dots
+                        dashPattern: const [10, 6],
+                        child: const SizedBox(
+                          width: double.infinity,
+                          height: 200,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.camera_alt_outlined, size: 100),
+                              Text('Subir Imagen')
+                            ],
+                          ),
+                        ),
+                      ),
               ),
               const SizedBox(height: 20),
               TextField(
@@ -58,23 +82,20 @@ class NewProductScreen extends HookWidget {
                 'Escoja una categoria',
                 style: TextStyle(fontSize: 16),
               ),
-              RadioListTile(
-                value: TypeProduct.producto,
-                groupValue: product.value,
-                activeColor: greenColor,
+              DropdownButtonFormField(
+                decoration: inputDecoration(null),
+                value: categoryMap.entries
+                    .firstWhere((element) => element.value == "Frutas")
+                    .value,
+                items: categoryMap.entries.map((item) {
+                  return DropdownMenuItem(
+                    value: item.value,
+                    child: Text(item.key),
+                  );
+                }).toList(),
                 onChanged: (value) {
-                  product.value = value!;
+                  selectedCategory.value = value!;
                 },
-                title: const Text('Producto'),
-              ),
-              RadioListTile(
-                value: TypeProduct.comestible,
-                groupValue: product.value,
-                activeColor: greenColor,
-                onChanged: (value) {
-                  product.value = value!;
-                },
-                title: const Text('Comestible'),
               ),
               const SizedBox(height: 20),
               TextField(
@@ -92,15 +113,15 @@ class NewProductScreen extends HookWidget {
                   ElevatedButton(
                     style: buttonStyle,
                     onPressed: () {
-                      // productProvider.sendProduct(nombreController.text,
-                      //     descripcionController.text, product.value);
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SuccessProductScreen(),
-                        ),
-                        (Route<dynamic> route) => false,
-                      );
+                      productProvider.sendProduct(nombreController.text,
+                          descripcionController.text, selectedCategory.value);
+                      // Navigator.pushAndRemoveUntil(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => const SuccessProductScreen(),
+                      //   ),
+                      //   (Route<dynamic> route) => false,
+                      // );
                     },
                     child: const Text(
                       'Subir articulo',

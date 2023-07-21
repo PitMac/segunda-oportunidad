@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:segunda_oportu/widgets/consts.dart';
 import 'package:segunda_oportu/widgets/style_widgets.dart';
 
 class HomeListScreen extends HookWidget {
@@ -7,7 +8,7 @@ class HomeListScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final index = useState(0);
+    final selected = useState("Frutas");
 
     final selectedItem =
         TextStyle(color: greenColor, fontSize: 17, fontWeight: FontWeight.bold);
@@ -20,28 +21,31 @@ class HomeListScreen extends HookWidget {
         width: double.infinity,
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    index.value = 0;
-                  },
-                  child: Text(
-                    'Productos',
-                    style: index.value == 0 ? selectedItem : noSelectedItem,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    index.value = 1;
-                  },
-                  child: Text(
-                    'Comestibles',
-                    style: index.value == 1 ? selectedItem : noSelectedItem,
-                  ),
-                ),
-              ],
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: categoryMap.entries.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: GestureDetector(
+                      onTap: () {
+                        selected.value =
+                            categoryMap.entries.elementAt(index).value;
+                      },
+                      child: Text(
+                        categoryMap.entries.elementAt(index).key,
+                        style: selected.value ==
+                                categoryMap.entries.elementAt(index).value
+                            ? selectedItem
+                            : noSelectedItem,
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
             const SizedBox(height: 10),
             TextField(

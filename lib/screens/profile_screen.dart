@@ -35,7 +35,7 @@ class ProfileScreen extends HookWidget {
                 ),
               ),
               const Text(
-                'Sobre ti',
+                'Sobre mi',
                 style: TextStyle(fontSize: 16),
               ),
               TextField(

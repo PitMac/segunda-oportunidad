@@ -4,6 +4,9 @@ Color greenColor = const Color.fromARGB(255, 93, 234, 80);
 
 ButtonStyle buttonStyle = ButtonStyle(
   elevation: MaterialStateProperty.resolveWith((states) => 0),
+  textStyle: MaterialStateProperty.resolveWith((states) => const TextStyle(
+        fontSize: 18,
+      )),
   backgroundColor: MaterialStateColor.resolveWith((states) => greenColor),
   minimumSize: MaterialStateProperty.resolveWith(
     (states) => const Size(20, 50),
