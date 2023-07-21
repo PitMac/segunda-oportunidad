@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:segunda_oportu/screens/product_screen.dart';
 import 'package:segunda_oportu/widgets/consts.dart';
 import 'package:segunda_oportu/widgets/style_widgets.dart';
 
@@ -8,6 +10,8 @@ class HomeListScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseFirestore firebase = FirebaseFirestore.instance;
+
     final selected = useState("Frutas");
 
     final selectedItem =
@@ -85,6 +89,80 @@ class HomeListScreen extends HookWidget {
                 ),
               ],
             ),
+            Expanded(
+              child: StreamBuilder(
+                stream: firebase.collection(selected.value).snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return const Text('Something went wrong');
+                  }
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Text("Loading");
+                  }
+
+                  return GridView(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: 0.9,
+                    ),
+                    children:
+                        snapshot.data!.docs.map((DocumentSnapshot document) {
+                      Map<String, dynamic> data =
+                          document.data()! as Map<String, dynamic>;
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ProductScreen(document: document),
+                              ));
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: const BorderRadius.only(
+                              bottomRight: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                            side: BorderSide(width: 2, color: greenColor),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                width: double.infinity,
+                                height: 150,
+                                child: Image.network(
+                                  data['image_url'],
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text(
+                                  data['nombre'],
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  );
+                },
+              ),
+            )
           ],
         ),
       ),

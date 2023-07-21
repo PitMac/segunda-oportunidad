@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:provider/provider.dart';
+import 'package:segunda_oportu/provider/auth_provider.dart';
 import 'package:segunda_oportu/screens/home_screen.dart';
 import 'package:segunda_oportu/widgets/style_widgets.dart';
 
@@ -9,6 +12,26 @@ class LoginScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final obscurePassword = useState(true);
+
+    final correoController = useTextEditingController();
+    final passwordController = useTextEditingController();
+
+    final authProvider = Provider.of<AuthProvider>(context);
+
+    useEffect(() {
+      if (authProvider.successLogin) {
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomeScreen(),
+            ),
+            (Route<dynamic> route) => false,
+          );
+        });
+      }
+      return null;
+    }, [authProvider.successLogin]);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Inicio Sesión'),
@@ -26,6 +49,7 @@ class LoginScreen extends HookWidget {
                 style: TextStyle(fontSize: 16),
               ),
               TextField(
+                controller: correoController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: inputDecoration(null),
               ),
@@ -35,6 +59,7 @@ class LoginScreen extends HookWidget {
                 style: TextStyle(fontSize: 16),
               ),
               TextField(
+                controller: passwordController,
                 decoration: InputDecoration(
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: greenColor),
@@ -64,19 +89,17 @@ class LoginScreen extends HookWidget {
                 ),
               ),
               const Expanded(child: SizedBox()),
+              Text(authProvider.errorMessage != ''
+                  ? 'Error: ${authProvider.errorMessage}'
+                  : ''),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   ElevatedButton(
                     style: buttonStyle,
-                    onPressed: () {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomeScreen(),
-                        ),
-                        (Route<dynamic> route) => false,
-                      );
+                    onPressed: () async {
+                      await authProvider.logIn(
+                          correoController.text, passwordController.text);
                     },
                     child: const Text(
                       'Inicio de sesion',

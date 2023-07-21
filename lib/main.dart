@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:segunda_oportu/provider/auth_provider.dart';
 import 'package:segunda_oportu/provider/product_provider.dart';
 import 'package:segunda_oportu/screens/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,6 +21,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => ProductProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AuthProvider(),
         )
       ],
       child: MaterialApp(

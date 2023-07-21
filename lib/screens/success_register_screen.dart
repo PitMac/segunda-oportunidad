@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:segunda_oportu/screens/home_screen.dart';
+import 'package:segunda_oportu/screens/login_screen.dart';
 import 'package:segunda_oportu/widgets/style_widgets.dart';
 
 class SuccessRegisterScreen extends StatelessWidget {
@@ -35,7 +35,7 @@ class SuccessRegisterScreen extends StatelessWidget {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const HomeScreen(),
+                        builder: (context) => const LoginScreen(),
                       ),
                       (Route<dynamic> route) => false,
                     );

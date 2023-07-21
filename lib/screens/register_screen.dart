@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:provider/provider.dart';
+import 'package:segunda_oportu/provider/auth_provider.dart';
 import 'package:segunda_oportu/screens/success_register_screen.dart';
 import 'package:segunda_oportu/widgets/style_widgets.dart';
 
@@ -10,6 +12,15 @@ class RegisterScreen extends HookWidget {
   Widget build(BuildContext context) {
     final obscurePassword = useState(true);
     final otherPassword = useState(true);
+
+    final nombreController = useTextEditingController();
+    final apellidoController = useTextEditingController();
+    final correoController = useTextEditingController();
+    final passwordController = useTextEditingController();
+    final passwordVController = useTextEditingController();
+
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Registro'),
@@ -28,6 +39,7 @@ class RegisterScreen extends HookWidget {
                   style: TextStyle(fontSize: 16),
                 ),
                 TextField(
+                  controller: nombreController,
                   decoration: inputDecoration(null),
                 ),
                 const SizedBox(height: 20),
@@ -36,6 +48,7 @@ class RegisterScreen extends HookWidget {
                   style: TextStyle(fontSize: 16),
                 ),
                 TextField(
+                  controller: apellidoController,
                   decoration: inputDecoration(null),
                 ),
                 const SizedBox(height: 20),
@@ -44,6 +57,7 @@ class RegisterScreen extends HookWidget {
                   style: TextStyle(fontSize: 16),
                 ),
                 TextField(
+                  controller: correoController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: inputDecoration(null),
                 ),
@@ -53,6 +67,7 @@ class RegisterScreen extends HookWidget {
                   style: TextStyle(fontSize: 16),
                 ),
                 TextField(
+                  controller: passwordController,
                   decoration: InputDecoration(
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: greenColor),
@@ -77,6 +92,7 @@ class RegisterScreen extends HookWidget {
                   style: TextStyle(fontSize: 16),
                 ),
                 TextField(
+                  controller: passwordVController,
                   decoration: InputDecoration(
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: greenColor),
@@ -107,6 +123,14 @@ class RegisterScreen extends HookWidget {
                     ElevatedButton(
                       style: buttonStyle,
                       onPressed: () {
+                        if (passwordController.text ==
+                            passwordVController.text) {
+                          authProvider.signUp(
+                              nombreController.text,
+                              apellidoController.text,
+                              correoController.text,
+                              passwordVController.text);
+                        }
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
