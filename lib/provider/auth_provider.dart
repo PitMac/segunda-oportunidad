@@ -13,7 +13,7 @@ class AuthProvider with ChangeNotifier {
   bool successLogin = false;
 
   signUp(String nombre, String apellido, String correo, String password) async {
-    UserCredential userCredential = await auth
+    await auth
         .createUserWithEmailAndPassword(email: correo, password: password)
         .then((value) {
       firebaseFirestore.collection("Usuarios").doc(value.user!.uid).set(
@@ -45,8 +45,6 @@ class AuthProvider with ChangeNotifier {
     final streamResponse = await imageUploadRequest.send();
     final resp = await http.Response.fromStream(streamResponse);
     if (resp.statusCode != 200 && resp.statusCode != 201) {
-      print('Wrooong');
-      print(resp.body);
       return null;
     }
     final decodeData = json.decode(resp.body);
@@ -65,8 +63,7 @@ class AuthProvider with ChangeNotifier {
 
   logIn(String correo, String password) async {
     try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(
-          email: correo, password: password);
+      await auth.signInWithEmailAndPassword(email: correo, password: password);
       successLogin = true;
       errorMessage = '';
       notifyListeners();
@@ -78,7 +75,6 @@ class AuthProvider with ChangeNotifier {
         errorMessage = 'Contraseña incorrecta.';
         notifyListeners();
       }
-      print(e);
       successLogin = false;
       notifyListeners();
     }

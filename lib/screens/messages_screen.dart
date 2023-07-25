@@ -21,7 +21,7 @@ class MessagesScreen extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               trailing: const Icon(Icons.arrow_forward_ios_sharp),
-              tileColor: Colors.green[100],
+              tileColor: Colors.blue[100],
               subtitle: const Text(
                 'Hola, te estoy escribiendo por la razon de que en este momento estoy requiriendo el producto que publicaste',
                 style: TextStyle(overflow: TextOverflow.ellipsis),

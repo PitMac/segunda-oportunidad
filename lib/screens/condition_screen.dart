@@ -34,15 +34,10 @@ class ConditionScreen extends StatelessWidget {
               const Text(
                   'Nos alegra que hayas decidido unirte a nosotros para compartir lo que no necesites. Queremos recordarte que nuestra aplicacion no solo ayuda a la comunidad sino tambien al medio ambiente a reducir la cantidad de residuos en el mundo.'),
               const Text('''
-
 Antes de Comenzar
-
 Queremos darte alguna reglas importantes:
-
 1. Se respetuoso con los demas usuarios.
-
 2. No compartas articulos o alimentos que no esten en buenas condiciones.
-
 3.No utilices la plataforma para fines comerciales o de lucro personal.
 '''),
               const Expanded(child: SizedBox()),

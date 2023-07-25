@@ -107,7 +107,7 @@ class HomeListScreen extends HookWidget {
                       crossAxisCount: 2,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
-                      childAspectRatio: 0.9,
+                      childAspectRatio: 0.8,
                     ),
                     children:
                         snapshot.data!.docs.map((DocumentSnapshot document) {
@@ -143,14 +143,18 @@ class HomeListScreen extends HookWidget {
                                   fit: BoxFit.cover,
                                 ),
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Text(
-                                  data['nombre'],
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    overflow: TextOverflow.ellipsis,
+                              Expanded(
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: Text(
+                                      data['nombre'],
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               )

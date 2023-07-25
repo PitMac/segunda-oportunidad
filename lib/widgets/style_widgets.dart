@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-Color greenColor = const Color.fromARGB(255, 93, 234, 80);
+Color greenColor = const Color.fromARGB(255, 58, 152, 185);
+Color greenColor2 = const Color.fromARGB(255, 93, 234, 80);
 
 ButtonStyle buttonStyle = ButtonStyle(
   elevation: MaterialStateProperty.resolveWith((states) => 0),

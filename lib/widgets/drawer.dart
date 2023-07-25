@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:segunda_oportu/screens/about_screen.dart';
+import 'package:segunda_oportu/screens/help_screen.dart';
 import 'package:segunda_oportu/screens/profile_screen.dart';
 import 'package:segunda_oportu/widgets/style_widgets.dart';
 
@@ -30,13 +32,27 @@ class DrawerWidget extends StatelessWidget {
               leading: Icon(Icons.notifications),
               title: Text('Notificaciones'),
             ),
-            const ListTile(
-              leading: Icon(Icons.help),
-              title: Text('Ayuda'),
+            ListTile(
+              leading: const Icon(Icons.help),
+              title: const Text('Ayuda'),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HelpScreen(),
+                    ));
+              },
             ),
-            const ListTile(
-              leading: Icon(Icons.people),
-              title: Text('Quienes somos'),
+            ListTile(
+              leading: const Icon(Icons.people),
+              title: const Text('Quienes somos'),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AboutScreen(),
+                    ));
+              },
             ),
           ],
         ),
