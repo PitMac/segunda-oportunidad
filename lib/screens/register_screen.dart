@@ -114,9 +114,6 @@ class RegisterScreen extends HookWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                const SizedBox(
-                  height: 200,
-                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
