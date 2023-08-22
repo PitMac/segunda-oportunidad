@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:provider/provider.dart';
 import 'package:segunda_oportu/provider/auth_provider.dart';
 import 'package:segunda_oportu/screens/success_register_screen.dart';
+import 'package:segunda_oportu/widgets/dialog.dart';
 import 'package:segunda_oportu/widgets/style_widgets.dart';
 
 class RegisterScreen extends HookWidget {
@@ -14,6 +15,7 @@ class RegisterScreen extends HookWidget {
     final otherPassword = useState(true);
 
     final nombreController = useTextEditingController();
+    final celularController = useTextEditingController();
     final apellidoController = useTextEditingController();
     final correoController = useTextEditingController();
     final passwordController = useTextEditingController();
@@ -59,6 +61,16 @@ class RegisterScreen extends HookWidget {
                 TextField(
                   controller: correoController,
                   keyboardType: TextInputType.emailAddress,
+                  decoration: inputDecoration(null),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Numero telefonico',
+                  style: TextStyle(fontSize: 16),
+                ),
+                TextField(
+                  controller: celularController,
+                  keyboardType: TextInputType.number,
                   decoration: inputDecoration(null),
                 ),
                 const SizedBox(height: 20),
@@ -120,13 +132,32 @@ class RegisterScreen extends HookWidget {
                     ElevatedButton(
                       style: buttonStyle,
                       onPressed: () {
+                        if (nombreController.value.text.isEmpty ||
+                            apellidoController.value.text.isEmpty ||
+                            correoController.value.text.isEmpty ||
+                            celularController.value.text.isEmpty ||
+                            passwordVController.value.text.isEmpty ||
+                            passwordController.value.text.isEmpty) {
+                          showMyDialog(context, 'Rellene todos los campos');
+                          return;
+                        } else if (!RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+                        ).hasMatch(correoController.value.text)) {
+                          showMyDialog(context, 'Correo no valido');
+                          return;
+                        } else if (celularController.value.text.length != 10) {
+                          showMyDialog(context, 'Numero telefonico no valido');
+                          return;
+                        }
+
                         if (passwordController.text ==
                             passwordVController.text) {
                           authProvider.signUp(
                               nombreController.text,
                               apellidoController.text,
                               correoController.text,
-                              passwordVController.text);
+                              passwordVController.text,
+                              celularController.value.text);
                         }
                         Navigator.pushAndRemoveUntil(
                           context,

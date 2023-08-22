@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:segunda_oportu/screens/home_list_screen.dart';
-import 'package:segunda_oportu/screens/messages_screen.dart';
 import 'package:segunda_oportu/screens/new_product_screen.dart';
+import 'package:segunda_oportu/screens/profile_screen.dart';
 import 'package:segunda_oportu/widgets/drawer.dart';
 import 'package:segunda_oportu/widgets/style_widgets.dart';
 
@@ -15,13 +15,14 @@ class HomeScreen extends HookWidget {
 
     final screens = [
       const HomeListScreen(),
-      const MessagesScreen(),
+      const ProfileScreen(),
     ];
     return Scaffold(
       endDrawer: const DrawerWidget(),
       appBar: index.value == 0
           ? AppBar(
               title: const Text('Inicio'),
+              backgroundColor: greenColor,
             )
           : null,
       floatingActionButton: FloatingActionButton(
@@ -44,7 +45,7 @@ class HomeScreen extends HookWidget {
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
-          BottomNavigationBarItem(icon: Icon(Icons.email), label: 'Mensajes'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],
       ),
     );

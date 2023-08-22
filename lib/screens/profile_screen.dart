@@ -60,6 +60,7 @@ class ProfileScreen extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Perfil'),
+        backgroundColor: greenColor,
       ),
       body: user == null
           ? const Center(

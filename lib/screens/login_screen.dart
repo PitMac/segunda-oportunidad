@@ -4,6 +4,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:provider/provider.dart';
 import 'package:segunda_oportu/provider/auth_provider.dart';
 import 'package:segunda_oportu/screens/home_screen.dart';
+import 'package:segunda_oportu/screens/reset_password.dart';
+import 'package:segunda_oportu/widgets/dialog.dart';
 import 'package:segunda_oportu/widgets/style_widgets.dart';
 
 class LoginScreen extends HookWidget {
@@ -82,7 +84,14 @@ class LoginScreen extends HookWidget {
                 height: 10,
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PasswordScreen(),
+                    ),
+                  );
+                },
                 child: const Text(
                   'Olvidaste la contraseña?',
                   style: TextStyle(color: Colors.blue),
@@ -98,6 +107,16 @@ class LoginScreen extends HookWidget {
                   ElevatedButton(
                     style: buttonStyle,
                     onPressed: () async {
+                      if (correoController.value.text.isEmpty ||
+                          passwordController.value.text.isEmpty) {
+                        showMyDialog(context, 'Rellene todos los campos');
+                        return;
+                      } else if (!RegExp(
+                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+                      ).hasMatch(correoController.value.text)) {
+                        showMyDialog(context, 'Correo no valido');
+                        return;
+                      }
                       await authProvider.logIn(
                           correoController.text, passwordController.text);
                     },

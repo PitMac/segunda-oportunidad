@@ -12,7 +12,7 @@ class HomeListScreen extends HookWidget {
   Widget build(BuildContext context) {
     FirebaseFirestore firebase = FirebaseFirestore.instance;
 
-    final selected = useState("Frutas");
+    final selected = useState("NoPerecibles");
 
     final selectedItem =
         TextStyle(color: greenColor, fontSize: 17, fontWeight: FontWeight.bold);

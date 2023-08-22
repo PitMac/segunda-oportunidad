@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:image_picker/image_picker.dart';
@@ -18,9 +19,13 @@ class NewProductScreen extends HookWidget {
     final nombreController = useTextEditingController();
     final descripcionController = useTextEditingController();
     final selectedImage = useState<File?>(null);
-    final selectedCategory = useState<String>("Frutas");
+    final selectedCategory = useState<String>("NoPerecibles");
 
     final productProvider = Provider.of<ProductProvider>(context);
+
+    final FirebaseAuth auth = FirebaseAuth.instance;
+
+    User? user = auth.currentUser;
 
     Future pickImageFromGallery() async {
       final returnedImage =
@@ -86,7 +91,7 @@ class NewProductScreen extends HookWidget {
               DropdownButtonFormField(
                 decoration: inputDecoration(null),
                 value: categoryMap.entries
-                    .firstWhere((element) => element.value == "Frutas")
+                    .firstWhere((element) => element.value == "NoPerecibles")
                     .value,
                 items: categoryMap.entries.map((item) {
                   return DropdownMenuItem(
@@ -130,6 +135,7 @@ class NewProductScreen extends HookWidget {
                           descripcionController.text,
                           selectedCategory.value,
                           imageUrl!,
+                          user!.email!,
                         );
                       }
                     },

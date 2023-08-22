@@ -12,7 +12,8 @@ class AuthProvider with ChangeNotifier {
   String errorMessage = '';
   bool successLogin = false;
 
-  signUp(String nombre, String apellido, String correo, String password) async {
+  signUp(String nombre, String apellido, String correo, String password,
+      String numero) async {
     await auth
         .createUserWithEmailAndPassword(email: correo, password: password)
         .then((value) {
@@ -21,12 +22,17 @@ class AuthProvider with ChangeNotifier {
           'nombre': nombre,
           'apellido': apellido,
           'correo': correo,
-          'contraseña': password
+          'contraseña': password,
+          'numero': numero
         },
       );
 
       return value;
     });
+  }
+
+  resetPassword(String correo) async {
+    await auth.sendPasswordResetEmail(email: correo);
   }
 
   Future<String?> uploadImage(File imageFile) async {

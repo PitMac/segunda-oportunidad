@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:provider/provider.dart';
+import 'package:segunda_oportu/provider/product_provider.dart';
 import 'package:segunda_oportu/widgets/style_widgets.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class ProductScreen extends HookWidget {
   final DocumentSnapshot<Object?> document;
@@ -10,16 +13,40 @@ class ProductScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+    final productProvider = Provider.of<ProductProvider>(context);
+    const url = 'https://api.whatsapp.com/send?phone=593';
+
+    useEffect(() {
+      productProvider.getPeople(data['usuario']);
+      return null;
+    }, []);
     return Scaffold(
       bottomSheet: Container(
         margin: const EdgeInsets.all(10),
         width: double.infinity,
         child: ElevatedButton(
-          style: buttonStyle,
-          onPressed: () {},
-          child: const Text(
-            'Enviar mensaje',
-            style: TextStyle(color: Colors.white),
+          style: buttonStyleW,
+          onPressed: () async {
+            if (await canLaunchUrlString(
+                url + productProvider.currentUser!['numero'])) {
+              await launchUrlString(
+                  url + productProvider.currentUser!['numero']);
+            }
+          },
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 30,
+                child: Image.asset('assets/whatsapp.png'),
+              ),
+              const SizedBox(width: 10),
+              const Text(
+                'Enviar mensaje',
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
           ),
         ),
       ),
@@ -51,6 +78,17 @@ class ProductScreen extends HookWidget {
               Text(
                 data['descripcion'],
                 style: const TextStyle(fontSize: 17),
+              ),
+              ListTile(
+                title: Text(
+                  productProvider.currentUser != null
+                      ? productProvider.currentUser!['nombre'] +
+                          " " +
+                          productProvider.currentUser!['apellido']
+                      : 'Cargando..',
+                  style: const TextStyle(fontSize: 17),
+                ),
+                leading: const Text('Usuario: '),
               ),
               const Align(
                 alignment: Alignment.topLeft,
